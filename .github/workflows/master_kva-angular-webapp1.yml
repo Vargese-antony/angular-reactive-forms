@@ -24,12 +24,33 @@ jobs:
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --prod
+          npm run build --if-present
+          npm run test --if-present
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v2
+        with:
+          name: node-app
+          path: .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v2
+        with:
+          name: node-app
 
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'kva-angular-webapp1'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5072F371DC6D4E63AB2D07A7BDFDCB47 }}
-          package: ./dist/angular-reactive-forms
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C51618B4329D4A2BACD1325C5A7963C9 }}
+          package: .
