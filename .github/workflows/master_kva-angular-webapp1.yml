@@ -50,6 +50,5 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'kva-angular-webapp1'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5072F371DC6D4E63AB2D07A7BDFDCB47 }}
-          package: .
+          package: ./dist/angular-reactive-forms
