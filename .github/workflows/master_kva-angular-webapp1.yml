@@ -52,4 +52,4 @@ jobs:
           app-name: 'kva-angular-webapp1'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C51618B4329D4A2BACD1325C5A7963C9 }}
-          package: ./dist
+          package: .
